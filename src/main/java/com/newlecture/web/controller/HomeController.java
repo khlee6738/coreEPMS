@@ -5,8 +5,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
-		@GetMapping("/index")
-		public String asdf() {
-			return "이규호 화면이다.11111112222333333";
-		}
+	
+	@GetMapping("/")
+	public String home() {
+		return "이규호 home 경로이다.";
+	}	
+	
+	@GetMapping("/index")
+	public String asdf() {
+		return "이규호 index 경로이다.";
+	}
 }
