@@ -8,11 +8,11 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String home() {
-		return "이규호 home 경로이다.jasper설치";
+		return "이규호 home 경로이다.jasper설치, static에 html등을 추가함";
 	}	
 	
 	@GetMapping("/index")
 	public String asdf() {
-		return "이규호 index 경로이다.jasper설치";
+		return "이규호 index 경로이다.jasper설치, static에 html등을 추가함";
 	}
 }
