@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 		@GetMapping("/index")
 		public String asdf() {
-			return "이규호 화면이다.11111112222";
+			return "이규호 화면이다.11111112222333333";
 		}
 }
