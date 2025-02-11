@@ -58,7 +58,7 @@ public class UserController {
 		}else {
 			reAttr.addFlashAttribute("msg","존재하지 않는 아이디입니다.");
 			s_Path = "redirect:login";
-		} 
+		}
 		
 		return s_Path;
 	}
