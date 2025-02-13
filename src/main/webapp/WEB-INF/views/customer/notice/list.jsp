@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%> 
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
@@ -19,7 +19,7 @@
             display:flex; 
             align-items: center;
             
-            background: url("../../images/customer/visual.png") no-repeat center;
+            background: url("/images/customer/visual.png") no-repeat center;
         }
     </style>
 </head>
@@ -180,7 +180,7 @@
 					<tr>
 						<td>${n.ID}</td>
 						<td class="title indent text-align-left"><a href="detail.html">${n.TITLE}</a></td>
-						<td>${n.MEMBER_ID}</td>
+						<td>${n.MEMBER_NAME}</td>
 						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${n.REGDATE}"/></td>
 						<td><fmt:formatNumber value="${n.HIT}" /></td>
 					</tr>

@@ -15,13 +15,17 @@ import com.newlecture.web.service.NoticeService;
 @RequestMapping("/customer/notice/")
 public class NoticeController {
 
-		@Autowired
+	@Autowired
 	private NoticeService service;
 	
 	@GetMapping("list")
 	public String list(Model model) {
+		int page = 1;
+		String field = "";
+		String query = "";
+		int pub = 0; //관리자 리스트 페이지설정 (일반사용자는 1, 이경우에는 공개처리된것만 보임)
 		
-		List<NoticeViewDto> list = service.getList();
+		List<NoticeViewDto> list = service.getList(page,field,query,pub);
 		
 		model.addAttribute("list", list);
 		return "customer/notice/list";		

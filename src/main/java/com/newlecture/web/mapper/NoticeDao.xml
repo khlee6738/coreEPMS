@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.newlecture.web.dao.NoticeDao">
+  <!-- 게시글 List -->
+  	<select id="getList" resultType="com.newlecture.web.dto.NoticeViewDto">
+ 		select * from notice_view
+    	<trim prefix="WHERE" prefixOverrides="and | or">	<!-- 바로 뒤에 AND 또는 OR가 시작되면 해당 글자를 삭제하고 WHERE를 붙임 -->
+    	delyn = 0 
+    	  	<if test="query != null and query != ''">
+		  		and ${field} like '%${query}%'
+		  	</if>
+		  	<if test="pub == 1">
+		  		and PUBYN = #{pub}
+		  	</if> 
+    	</trim>
+		order by id desc  
+		limit #{firstset}, #{lastset} 	
+  	</select>
+
+  <!-- 게시글 수 -->
+  	<select id="getCount" resultType="int">
+ 		select count(*) from notice_view
+    	<trim prefix="WHERE" prefixOverrides="and | or">	<!-- 바로 뒤에 AND 또는 OR가 시작되면 해당 글자를 삭제하고 WHERE를 붙임 -->
+    	delyn = 0 
+    	  	<if test="query != null and query != ''">
+		  		and ${field} like '%${query}%'
+		  	</if>
+		  	<if test="pub == 1">
+		  		and PUBYN = #{pub}
+		  	</if> 
+    	</trim>	
+  	</select>  
+  </mapper>

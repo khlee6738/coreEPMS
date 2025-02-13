@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <!DOCTYPE html>
 <html>
 
 <head>
-	<title>코딩 전문가를 만들기 위한 온라인 강의 시스템</title>
 	<meta charset="UTF-8">
 	<title>공지사항목록</title>
 
@@ -24,66 +26,13 @@
 	<!-- header 부분 -->
 
 	<header id="header">
-
 		<div class="content-container">
-			<!-- ---------------------------<header>--------------------------------------- -->
+<!-- ---------------------------<header>--------------------------------------- -->
 
-			<h1 id="logo">
-				<a href="/index.html">
-					<img src="/images/coreplus_logos.png" alt="코어플러스" />
+<%@ include file="../../inc/header.jsp" %>
 
-				</a>
-			</h1>
-
-			<section>
-				<h1 class="hidden">헤더</h1>
-
-				<nav id="main-menu">
-					<h1>메인메뉴</h1>
-					<ul>
-						<li><a href="/guide">학습가이드</a></li>
-
-						<li><a href="/course">강좌선택</a></li>
-						<li><a href="/answeris/index">AnswerIs</a></li>
-					</ul>
-				</nav>
-
-				<div class="sub-menu">
-
-					<section id="search-form">
-						<h1>강좌검색 폼</h1>
-						<form action="/course">
-							<fieldset>
-								<legend>과정검색필드</legend>
-								<label>과정검색</label>
-								<input type="text" name="q" value="" />
-								<input type="submit" value="검색" />
-							</fieldset>
-						</form>
-					</section>
-
-					<nav id="acount-menu">
-						<h1 class="hidden">회원메뉴</h1>
-						<ul>
-							<li><a href="/index.html">HOME</a></li>
-							<li><a href="/member/login.html">로그인</a></li>
-							<li><a href="/member/agree.html">회원가입</a></li>
-						</ul>
-					</nav>
-
-					<nav id="member-menu" class="linear-layout">
-						<h1 class="hidden">고객메뉴</h1>
-						<ul class="linear-layout">
-							<li><a href="/member/home"><img src="/images/txt-mypage.png" alt="마이페이지" /></a></li>
-							<li><a href="/notice/list.html"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
-						</ul>
-					</nav>
-
-				</div>
-			</section>
-
+<!-- ---------------------------<header>--------------------------------------- -->
 		</div>
-
 	</header>
 
 	<!-- --------------------------- <visual> --------------------------------------- -->
@@ -138,21 +87,22 @@
 
 				<div class="search-form margin-top first align-right">
 					<h3 class="hidden">공지사항 검색폼</h3>
-					<form class="table-form">
+					<form class="table-form"  action="list" method="post">
 						<fieldset>
 							<legend class="hidden">공지사항 검색 필드</legend>
 							<label class="hidden">검색분류</label>
 							<select name="f">
-								<option value="title">제목</option>
-								<option value="writerId">작성자</option>
+								<option value="TITLE" ${(param.f == "TITLE")? "selected" : ""}>제목</option>
+								<option value="MEMBER_NAME" ${(param.f == "MEMBER_NAME")? "selected" : ""}>작성자</option>
 							</select>
 							<label class="hidden">검색어</label>
-							<input type="text" name="q" value="" />
+							<input type="text" name="q" value="${param.q}" />
 							<input class="btn btn-search" type="submit" value="검색" />
 						</fieldset>
 					</form>
 				</div>
-
+<!-- 일괄공개처리를 위한 form -->				
+				<form method="post" action="pubAll">
 				<div class="notice margin-top">
 					<h3 class="hidden">공지사항 목록</h3>
 					<table class="table">
@@ -164,108 +114,66 @@
 								<th class="w100">작성일</th>
 								<th class="w60">조회수</th>
 								<th class="w40">공개</th>
-								<th class="w40">삭제</th>
+								<!-- <th class="w40">삭제</th> -->
 							</tr>
 						</thead>
 						<tbody>
-
+						<c:set var="ids" value=""/> <!-- 공개일괄처리에서 사용할 조회된 해당 Page의 전체 번호 -->
+						<c:forEach var="n" items="${list }" varStatus="st">
+							<c:set var="ids" value="${ids} ${n.ID}"/> <!-- 공개일괄처리에서 사용할 조회된 해당 Page의 전체 번호 -->
 							<tr>
-								<td>8</td>
-								<td class="title indent text-align-left"><a href="detail.html">스프링 8강까지의 예제 코드</a></td>
-								<td>newlec</td>
-								<td>
-									2019-08-18
-								</td>
-								<td>146</td>
-								<td><input type="checkbox" name="open"></td>
-								<td><input type="checkbox" name="del"></td>
+								<td>${n.ID }</td>
+								<td class="title indent text-align-left"><a href="detail.html">${n.TITLE }</a></td>
+								<td>${n.MEMBER_NAME }</td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd" value="${n.REGDATE}"/></td>
+								<td><fmt:formatNumber value="${n.HIT}" /></td>
+								<td><input type="checkbox" ${(n.PUBYN==1)? 'checked' : ''} name="open-id" value="${n.ID}"></td>
+								<!-- <td><input type="checkbox" name="del"></td> -->
 							</tr>
-
-							<tr>
-								<td>7</td>
-								<td class="title indent text-align-left"><a href="detail.html">스프링 DI 예제 코드</a></td>
-								<td>newlec</td>
-								<td>
-									2019-08-15
-								</td>
-								<td>131</td>
-								<td><input type="checkbox" name="open"></td>
-								<td><input type="checkbox" name="del"></td>
-							</tr>
-
-							<tr>
-								<td>6</td>
-								<td class="title indent text-align-left"><a href="detail.html">뉴렉쌤 9월 초 국기과정 모집 안내</a>
-								</td>
-								<td>newlec</td>
-								<td>
-									2019-06-11
-								</td>
-								<td>517</td>
-								<td><input type="checkbox" name="open"></td>
-								<td><input type="checkbox" name="del"></td>
-							</tr>
-
-							<tr>
-								<td>5</td>
-								<td class="title indent text-align-left"><a href="detail.html">뉴렉처 강의 수강 방식 안내</a></td>
-								<td>newlec</td>
-								<td>
-									2019-05-24
-								</td>
-								<td>448</td>
-								<td><input type="checkbox" name="open"></td>
-								<td><input type="checkbox" name="del"></td>
-							</tr>
-
-							<tr>
-								<td>4</td>
-								<td class="title indent text-align-left"><a href="detail.html">자바 구조적인 프로그래밍 강의 예제
-										파일</a></td>
-								<td>newlec</td>
-								<td>
-									2019-04-24
-								</td>
-								<td>520</td>
-								<td><input type="checkbox" name="open"></td>
-								<td><input type="checkbox" name="del"></td>
-							</tr>
-
-
+						</c:forEach>
 						</tbody>
 					</table>
 				</div>
 
+				<!-- 페이지 정의선언 -->				
+				<c:set var="page" value="${(empty param.p)?1:param.p}"></c:set>
+				<c:set var="startNum" value="${page-(page-1)%5}" />
+				<c:set var="lastNum" value="${fn:substringBefore(Math.ceil(count/10),'.')}" />				
+				<!-- 페이지 정의선언 -->
+
 				<div class="indexer margin-top align-right">
 					<h3 class="hidden">현재 페이지</h3>
-					<div><span class="text-orange text-strong">1</span> / 1 pages</div>
+					<div><span class="text-orange text-strong">${(empty param.p)?1:param.p}</span> / ${lastNum} pages</div>
 				</div>
 
 				<div class="text-align-right margin-top">
-					<input type="submit" class="btn-text btn-default" value="일괄공개">
-					<input type="submit" class="btn-text btn-default" value="일괄삭제">
-					<a class="btn-text btn-default" href="reg.html">글쓰기</a>				
+					<input type="submit" class="btn-text btn-default" value="일괄공개처리">
+					<!-- <input type="submit" class="btn-text btn-default" value="일괄삭제">  -->
+					<a class="btn-text btn-default" href="reg.html">글쓰기</a>									
 				</div>
-
+				<input type="hidden" name="ids" value="${ids}">	<!-- 공개일괄처리에서 사용할 조회된 해당 Page의 전체 번호 -->
+				</form>
+<!-- 일괄공개처리를 위한 form -->					
+<!-- 이전 페이지 -->				
 				<div class="margin-top align-center pager">
-
 					<div>
-
-
 						<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
-
 					</div>
+<!-- 이전 페이지 -->					
+<!-- 페이지 목록 -->					
 					<ul class="-list- center">
-						<li><a class="-text- orange bold" href="?p=1&t=&q=">1</a></li>
-
+					<c:forEach var="i" begin="0" end="4">
+						<c:if test="${(startNum+i) <= lastNum }">
+						<li><a class="-text- ${(page==(startNum+i))? 'orange' : ''} bold"  href="javascript:postForm('list',{p: '${startNum+i}',f: '${param.f}', q: '${param.q}'});">${startNum+i}</a></li>
+						</c:if>
+					</c:forEach>
 					</ul>
+<!-- 페이지 목록 -->	
+<!-- 다음 페이지 -->						
 					<div>
-
-
 						<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
-
 					</div>
-
+<!-- 다음 페이지 -->
 				</div>
 			</main>
 
